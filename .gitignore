@@ -82,5 +82,3 @@ Combat/Plugins/Developer/*
 # Cache files for the editor to use
 Combat/DerivedDataCache/*
 Content/External
-Content/ParagonAurora
-Content/ParagonGrux
