@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include <Kismet/KismetMathLibrary.h>
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values for this component's properties
 ULockOnComponent::ULockOnComponent()
@@ -25,6 +26,7 @@ void ULockOnComponent::BeginPlay()
 	_ownerRef = GetOwner<ACharacter>();
 	_playerController = GetWorld()->GetFirstPlayerController();
 	_movementComp = _ownerRef->GetCharacterMovement();
+	_springArmComponent = _ownerRef->FindComponentByClass<USpringArmComponent>();
 }
 
 void ULockOnComponent::StartLockOn(float Radius)
@@ -55,7 +57,31 @@ void ULockOnComponent::StartLockOn(float Radius)
 	_playerController->SetIgnoreLookInput(true);
 	_movementComp->bOrientRotationToMovement = false;
 	_movementComp->bUseControllerDesiredRotation = true;
-	//_movementComp->
+	
+	_springArmComponent->TargetOffset = FVector{ 0.0, 0.0, 100.0 };
+}
+
+void ULockOnComponent::StopLockOn()
+{
+	CurrentTargetActor = nullptr;
+	
+	_movementComp->bOrientRotationToMovement = true;
+	_movementComp->bUseControllerDesiredRotation = false;
+	_springArmComponent->TargetOffset = FVector::ZeroVector;
+
+	_playerController->ResetIgnoreLookInput();
+}
+
+void ULockOnComponent::ToggleLockOn(float radius)
+{
+	if (IsValid(CurrentTargetActor))
+	{
+		StopLockOn();
+	}
+	else
+	{
+		StartLockOn(radius);
+	}
 }
 
 // Called every frame
@@ -68,7 +94,10 @@ void ULockOnComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		return;
 	}
 
-	FRotator rotation = UKismetMathLibrary::FindLookAtRotation(_ownerRef->GetActorLocation(), CurrentTargetActor->GetActorLocation());
+	FVector targetLocation = CurrentTargetActor->GetActorLocation();
+	targetLocation.Z -= 125;
+
+	FRotator rotation = UKismetMathLibrary::FindLookAtRotation(_ownerRef->GetActorLocation(), targetLocation);
 
 	_playerController->SetControlRotation(rotation);
 }

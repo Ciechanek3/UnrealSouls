@@ -17,18 +17,23 @@ class COMBAT_API ULockOnComponent : public UActorComponent
 	APlayerController* _playerController;
 	class UCharacterMovementComponent* _movementComp;
 
-	AActor* CurrentTargetActor;
+	class USpringArmComponent* _springArmComponent;
 
 public:	
 	// Sets default values for this component's properties
 	ULockOnComponent();
 
+	AActor* CurrentTargetActor;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	void StartLockOn(float radius);
+	void StopLockOn();
+
 	UFUNCTION(BlueprintCallable)
-	void StartLockOn(float Radius);
+	void ToggleLockOn(float radius = 750f);
 
 public:	
 	// Called every frame
