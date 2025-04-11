@@ -33,7 +33,10 @@ protected:
 	void StopLockOn();
 
 	UFUNCTION(BlueprintCallable)
-	void ToggleLockOn(float radius = 750f);
+	void ToggleLockOn(float radius);
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Range")
+	float _autoUnlockRange;
 
 public:	
 	// Called every frame

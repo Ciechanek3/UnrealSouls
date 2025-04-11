@@ -39,7 +39,7 @@ void ULockOnComponent::StartLockOn(float Radius)
 		false,
 		_ownerRef
 	};
-
+	
 	bool bHasFoundTarget = GetWorld()->SweepSingleByChannel(
 		hitResult,
 		currentLocation,
@@ -94,6 +94,12 @@ void ULockOnComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		return;
 	}
 
+	if (FVector::Distance(CurrentTargetActor->GetActorLocation(), _ownerRef->GetActorLocation()) > _autoUnlockRange)
+	{
+		StopLockOn();
+		return;
+	}
+
 	FVector targetLocation = CurrentTargetActor->GetActorLocation();
 	targetLocation.Z -= 125;
 
@@ -101,4 +107,3 @@ void ULockOnComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 	_playerController->SetControlRotation(rotation);
 }
-
