@@ -23,6 +23,7 @@ public:
 	// Sets default values for this component's properties
 	ULockOnComponent();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	AActor* CurrentTargetActor;
 
 protected:
