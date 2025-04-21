@@ -26,7 +26,7 @@ void UPlayerAnimInstance::UpdateDirection()
 
 	if (!bIsInCombat) return;
 
-	_currentDirection = CalculateDirection(
+	_currentSpeed = CalculateDirection(
 
 		pawn->GetVelocity(),
 		pawn->GetActorRotation()

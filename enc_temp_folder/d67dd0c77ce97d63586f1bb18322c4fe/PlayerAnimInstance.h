@@ -18,7 +18,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float _currentSpeed { 0.0f };
 
-	UFUNCTION(BlueprintCallable)
 	void UpdateSpeed();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
